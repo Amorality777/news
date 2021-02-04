@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %} {{ news.title }} {% endblock %}
+
+{% block content %}
+<h1>{{ news.title }}</h1>
+<p> {{ news.content }}</p>
+<p>Дата создани: {{ news.created_at }}</p>
+<p>Последнее обновление: {{ news.update_at }}</p>
+<p>Статус: {{ news.status }}</p>
+
+<p><a href="{% url 'news_edit' news.id %}">Редактировать новость</a></p>
+{% if news.comments.all %}
+<ul>
+    {% for comment in news.comments.all %}
+    <li>
+        <p>{{ comment.username }}</p>
+        <p>{{ comment.date }}</p>
+        <p>{{ comment.comment }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Пока нет ни одного комментария</p>
+{% endif %}
+
+{% if request.user.is_authenticated %}
+<p style="margin-left: 70px"><b>username:</b> {{ request.user.username }}</p>
+{% endif %}
+<form method="post" action="{% url 'news_detail' news.id %}">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+<!--    <input type="hidden" id="username" type="text" name="username" value="{{ request.user.username }}">-->
+    <button type="submit">Отправить</button>
+</form>
+
+{% endblock %}

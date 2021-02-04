@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<h1>Список новостей</h1>
+{% if news_list %}
+<ul>
+    {% for news in news_list %}
+    <li><a href="{% url 'news_detail' news.id %}"> {{ news.title }}</a></li>
+    {% endfor %}
+</ul>
+<a href="{% url 'news_create' %}">Создать новость</a>
+{% else %}
+<p>Пока нет ни одной новости</p>
+<p><a href="{% url 'news_create' %}">Будь первым!</a></p>
+{% endif %}
+{% endblock %}
